@@ -317,7 +317,7 @@ Respond ONLY with JSON. No explanation.`;
       </div>
 
       {/* Quick trade chips */}
-      <div style={{padding:"8px 16px",overflowX:"auto",display:"flex",gap:8",background:C.waBubble,borderTop:`1px solid ${C.border}`}}>
+      <div style={{padding:"8px 16px",overflowX:"auto",display:"flex",gap:8,background:C.waBubble,borderTop:`1px solid ${C.border}`}}>
         <div style={{display:"flex",gap:8,minWidth:"max-content"}}>
           {WA_QUICK.slice(0,4).map((q,i)=>(
             <button key={i} onClick={()=>parseTrade(q)} style={{background:"rgba(37,211,102,.12)",border:"1px solid rgba(37,211,102,.3)",borderRadius:100,padding:"5px 12px",color:C.waGreen,fontSize:11,cursor:"pointer",whiteSpace:"nowrap",fontFamily:"'Plus Jakarta Sans',sans-serif",fontWeight:600}}>{q.length>30?q.slice(0,30)+"...":q}</button>
