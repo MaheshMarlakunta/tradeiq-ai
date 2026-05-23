@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         "x-api-key": apiKey,
         "anthropic-version": "2023-06-01",
       },
-      body: JSON.stringify(req.body),
+      body: JSON.stringify({ ...req.body, model: "claude-3-5-haiku-20241022" }),
     });
     const data = await response.json();
     if (data.error) return res.status(200).json({ content:[{text:`❌ Anthropic error: ${data.error.message}`}] });
