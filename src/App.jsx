@@ -139,20 +139,42 @@ const Spinner = ({size=20,color=C.accent}) => <div style={{width:size,height:siz
 
 // ─── TICKER ───────────────────────────────────────────────────────────────────
 const TICKS = [{s:"NIFTY 50",p:"24,635",c:"+0.82%"},{s:"SENSEX",p:"81,247",c:"+0.75%"},{s:"RELIANCE",p:"2,847",c:"+1.24%"},{s:"TCS",p:"3,542",c:"+0.87%"},{s:"HDFC BANK",p:"1,628",c:"-0.32%"},{s:"INFY",p:"1,456",c:"+2.15%"},{s:"SBIN",p:"782",c:"+1.89%"},{s:"COAL INDIA",p:"418",c:"-0.45%"},{s:"SUN PHARMA",p:"1,623",c:"+1.12%"},{s:"TATA STEEL",p:"152",c:"-1.23%"},{s:"CEAT",p:"3,124",c:"+2.34%"},{s:"WIPRO",p:"462",c:"+0.91%"}];
-const Ticker = () => (
-  <div style={{background:C.surfaceAlt,borderBottom:`1px solid ${C.border}`,overflow:"hidden",padding:"6px 0"}}>
-    <div style={{display:"flex",animation:"ticker 35s linear infinite",whiteSpace:"nowrap"}}>
-      {[...TICKS,...TICKS].map((t,i)=>(
-        <span key={i} style={{padding:"0 24px",display:"inline-flex",gap:8,alignItems:"center",fontSize:11,fontFamily:"'IBM Plex Mono',monospace"}}>
-          <span style={{color:C.textMuted}}>{t.s}</span><span style={{color:C.text}}>{t.p}</span>
-          <span style={{color:t.c.startsWith("+")?C.green:C.red}}>{t.c}</span><span style={{color:C.textDim}}>·</span>
-        </span>
-      ))}
-    </div>
-  </div>
-);
+const Ticker = () => {
+  const [ticks, setTicks] = useState(TICKS);
 
-// ─── NAV ──────────────────────────────────────────────────────────────────────
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch("/api/stocks");
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data?.length) setTicks(data.map(d => ({
+          s: d.s, p: d.p, c: d.c, live: true
+        })));
+      } catch {}
+    };
+    load();
+    const interval = setInterval(load, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const items = [...ticks, ...ticks];
+  return (
+    <div style={{background:C.surfaceAlt,borderBottom:`1px solid ${C.border}`,overflow:"hidden",padding:"6px 0"}}>
+      <div style={{display:"flex",animation:"ticker 35s linear infinite",whiteSpace:"nowrap"}}>
+        {items.map((t,i)=>(
+          <span key={i} style={{padding:"0 24px",display:"inline-flex",gap:8,alignItems:"center",fontSize:11,fontFamily:"'IBM Plex Mono',monospace"}}>
+            <span style={{color:C.textMuted}}>{t.s}</span>
+            <span style={{color:C.text}}>{t.p}</span>
+            <span style={{color:t.c?.startsWith("+")?C.green:C.red}}>{t.c}</span>
+            {t.live && <span style={{color:C.green,fontSize:8}}>●</span>}
+            <span style={{color:C.textDim}}>·</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
 const Nav = ({page,setPage,onUpgrade,isPro,lang,setLang}) => {
   const {t} = useLang();
   return (
