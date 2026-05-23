@@ -243,7 +243,7 @@ Format: {"stock":"NSE_SYMBOL_CAPS","type":"LONG or SHORT","entry":"price","exit"
 If you cannot parse: {"parsed":false}
 Respond ONLY with JSON. No explanation.`;
 
-      const res = await fetch("https://api.anthropic.com/v1/messages",{
+      const res = await fetch("/api/chat",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({
@@ -386,7 +386,7 @@ const AICoach = ({trades,isPro,onUpgrade,lang}) => {
         : `You are TradeIQ AI — India's #1 AI trading performance coach for NSE/BSE markets.
 Analyze journals, give sharp actionable insights in English. Use ₹, reference actual trade data. Max 300 words.
 Trade Data:\n${ctx}`;
-      const res = await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys,messages:[{role:"user",content:prompt}]})});
+      const res = await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:sys,messages:[{role:"user",content:prompt}]})});
       const d = await res.json();
       setResp(d.content?.[0]?.text||"Error");
     } catch { setResp("Connection error. Please try again."); }
