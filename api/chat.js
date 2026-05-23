@@ -13,7 +13,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({ ...req.body, model: "claude-3-5-haiku-20241022" }),
     });
     const data = await response.json();
-    if (data.error) return res.status(200).json({ content:[{text:`❌ Anthropic error: ${data.error.message}`}] });
+    if (data.error) return res.status(200).json({ content:[{text:`❌ Full error: ${JSON.stringify(data.error)}`}] });
     res.status(200).json(data);
   } catch (err) {
     res.status(500).json({ content:[{text:`❌ Server error: ${err.message}`}] });
