@@ -673,7 +673,7 @@ const PayModal = ({open,onClose,onSuccess,lang}) => {
     script.src="https://checkout.razorpay.com/v1/checkout.js";
     script.onload=()=>{
       const rzp=new window.Razorpay({
-        key:"rzp_test_YourKeyHere", // 🔑 Replace with your key
+        key:"rzp_live_StAQVjWOqeqsTZ", // 🔑 Replace with your key
         amount:sel.price*100,currency:"INR",name:"TradeIQ AI",description:sel.name,
         prefill:{name:form.name,email:form.email,contact:form.phone},
         theme:{color:C.accent},
