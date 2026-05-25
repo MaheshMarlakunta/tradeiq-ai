@@ -374,7 +374,7 @@ const AICoach = ({trades,isPro,onUpgrade,lang}) => {
   const [q,setQ] = useState("");
 
   const ask = async (prompt) => {
-    if(false){onUpgrade();return;}
+    if(!isPro && trades.length>3){onUpgrade();return;}
     setLoad(true); setResp("");
     try {
       const ctx = trades.map(t=>`${t.date}|${t.stock}|${t.type}|Entry:${t.entry}|Exit:${t.exit}|Qty:${t.qty}|Strat:${t.strategy}|Emotion:${t.emotion}|PnL:₹${t.pnl}`).join("\n");
